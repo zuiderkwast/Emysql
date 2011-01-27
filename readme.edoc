@@ -7,6 +7,7 @@ While you can use mysql via ODBC, using a driver like Emysql should perform bett
 
 This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more docs and samples. <a href="#1">emysql</a> is a clean rewrite of <a href="#2">erlang-mysql-driver</a>. 
 
+- - -
 
  <b>Which fork should I use?</b> See <a href="#History">History</a><br />
  <b>Who used this fork?</b> Electronic Arts <br />
@@ -16,15 +17,16 @@ This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more
  <b>Repository:</b> <a href="https://github.com/Eonblast/Emysql">https://github.com/Eonblast/Emysql</a><br />
  <b>Docs:</b> <a href="http://eonblast.github.com/Emysql/">http://eonblast.github.com/Emysql/</a><br />
 
+- - - 
 
 == Contents ==
 
 <li> <a href="#History">History</a></li>
-<li> Hints on Usage</li>
-<li> Samples</li>
-<li> Links</li>
-<li> Todo</li>
-<li> License</li>
+<li> <a href="#Hints on Usage">Hints on Usage</a></li>
+<li> <a href="#Samples">Samples</a></li>
+<li> <a href="#Links">Links</a></li>
+<li> <a href="#Todo">Todo</a></li>
+<li> <a href="#License">License</a></li>
 
 
 == History ==
