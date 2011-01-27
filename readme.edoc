@@ -1,16 +1,16 @@
 @doc 
 == Emysql  ==
 
-Erlang MySQL driver, based on a rewrite at Electronic Arts. Supports prepared statements and stored procedures. <a href="#Samples">[Samples]</a> and <a href="#Docs">[Docs]</a> see below.
+Erlang MySQL driver, based on a rewrite at Electronic Arts. Supports prepared statements and stored procedures. <a href="#Samples">Samples</a> and <a href="#Docs">Docs</a> see below.
 
 While you can use mysql via ODBC, using a driver like Emysql should perform better. 
 
 This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more docs and samples. <a href="#1">emysql</a> is a clean rewrite of <a href="#2">erlang-mysql-driver</a>. 
 
 
- <b>Which fork should I use?</b> See <a href="#History">[History]</a><br />
+ <b>Which fork should I use?</b> See <a href="#History">History</a><br />
  <b>Who used this fork?</b> Electronic Arts <br />
- <b>How do I ...?</b> See <a href="#Samples">[Samples]</a><br />
+ <b>How do I ...?</b> See <a href="#Samples">Samples</a><br />
 
  <b>Download:</b> <a href="https://github.com/Eonblast/Emysql/archives/master">https://github.com/Eonblast/Emysql/archives/master</a><br />
  <b>Repository:</b> <a href="https://github.com/Eonblast/Emysql">https://github.com/Eonblast/Emysql</a><br />
@@ -19,7 +19,7 @@ This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more
 
 == Contents ==
 
-<li> <a href="#History">[History]</a></li>
+<li> <a href="#History">History</a></li>
 <li> Hints on Usage</li>
 <li> Samples</li>
 <li> Links</li>
@@ -38,7 +38,7 @@ Open Source Erlang MySQL driver efforts are currently a fractured matter, at lea
 <li> <b>erlang-mysql-driver</b>: also in 2006/07 <a href="#ys">Yariv Sadan</a> created a fork from the ejabberd branch, gave it the name that stuck, and hosted it at <a href="#15">Google Code</a> before moving on to Facebook. He had added higher level handling of prepared statements and transactions, and stated that he had improved connection pooling and logging. There were changes both in the original Yxa and the ejabberd branch after the forking off that seem to never have made their way into the erlang-mysql-driver branch, which now lies dormant since Oct '07. In Feb '10, Dave Smith started making some</li>
 <a href="#15">updates</a> and put them on github, were the driver is now enjoying a couple of <a href="#16">active forks</a>.
 
-<li> <b>Emysql</b> was started from scratch in 2009 by <a href="#jv">Jacob Vorreuter</a> and <a href="#bw">Bill Warnecke</a> at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of <a href="#1">their work</a>, including all their commits and adding <a href="#docs">documentation</a>, <a href="#samples">[samples]</a>, <a href="#fixes">[fixes]</a> and extensions.   </li>
+<li> <b>Emysql</b> was started from scratch in 2009 by <a href="#jv">Jacob Vorreuter</a> and <a href="#bw">Bill Warnecke</a> at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of <a href="#1">their work</a>, including all their commits and adding <a href="#docs">documentation</a>, <a href="#samples">samples</a>, <a href="#fixes">fixes</a> and extensions.   </li>
 <br />
 <a href="#vb">Vitaliy Batichko</a> and
 <a href="#cr">Chris Rempel</a> have contributed updates to this branch. Thank you!
