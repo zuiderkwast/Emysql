@@ -7,7 +7,7 @@ While you can use mysql via ODBC, using a driver like Emysql should perform bett
 
 This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more docs and samples. <a href="#1">emysql</a> is a clean rewrite of <a href="#2">erlang-mysql-driver</a>. 
 
-- - -
+<hr/>
 
  <b>Which fork should I use?</b> See <a href="#History">History</a><br />
  <b>Who used this fork?</b> Electronic Arts <br />
@@ -17,17 +17,18 @@ This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more
  <b>Repository:</b> <a href="https://github.com/Eonblast/Emysql">https://github.com/Eonblast/Emysql</a><br />
  <b>Docs:</b> <a href="http://eonblast.github.com/Emysql/">http://eonblast.github.com/Emysql/</a><br />
 
-- - - 
+<hr/>
 
 == Contents ==
 
 <li> <a href="#History">History</a></li>
-<li> <a href="#Hints on Usage">Hints on Usage</a></li>
+<li> <a href="#Usage">Usage</a></li>
 <li> <a href="#Samples">Samples</a></li>
 <li> <a href="#Links">Links</a></li>
 <li> <a href="#Todo">Todo</a></li>
 <li> <a href="#License">License</a></li>
 
+<hr />
 
 == History ==
 
@@ -45,12 +46,12 @@ Open Source Erlang MySQL driver efforts are currently a fractured matter, at lea
 <a href="#vb">Vitaliy Batichko</a> and
 <a href="#cr">Chris Rempel</a> have contributed updates to this branch. Thank you!
 
-<a name="1">[1]: http://github.com/JacobVorreuter/emysql "emysql"  </a>
-<a name="2">[2]: http://github.com/dizzyd/erlang-mysql-driver "erlang-mysql-driver"  </a>
-<a name="3">[3]: http://www.kth.se/ "Royal Institure of Technology"  </a>
-<a name="4">[4]: https://github.com/fredrikt/yxa/tree/master/src/mysql "Yxa mysql driver"  </a>
-<a name="5">[5]: http://www.stacken.kth.se/project/yxa/index.html "Yxa Home"  </a>
-<a name="6">[6]: https://github.com/fredrikt/yxa "Yxa repository at github"  </a>
+<a name="1">[1]: http://github.com/JacobVorreuter/emysql "emysql"   </a>
+<a name="2">[2]: http://github.com/dizzyd/erlang-mysql-driver "erlang-mysql-driver"   </a>
+<a name="3">[3]: http://www.kth.se/ "Royal Institure of Technology"   </a>
+<a name="4">[4]: https://github.com/fredrikt/yxa/tree/master/src/mysql "Yxa mysql driver"   </a>
+<a name="5">[5]: http://www.stacken.kth.se/project/yxa/index.html "Yxa Home"   </a>
+<a name="6">[6]: https://github.com/fredrikt/yxa "Yxa repository at github"   </a>
 <a name="7">[7]: http://svn.process-one.net/ejabberd-modules/mysql/trunk/   </a>
     "ejabberd mysql driver"<br />
 <a name="8">[8]: https://support.process-one.net "Process One Home"  </a>
@@ -84,7 +85,7 @@ Open Source Erlang MySQL driver efforts are currently a fractured matter, at lea
 <a name="docs">[docs]:    http://eonblast.github.com/Emysql/  </a>
           "Emysql online docs"<br />
 
-== Hints on Usage  ==
+== Usage  ==
 
 ==== Start the application ====
 
