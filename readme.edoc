@@ -28,7 +28,7 @@ This is a continuation fork of <a href="#1">emysql</a> with fixes, updates, more
 <li> <a href="#Todo">Todo</a></li>
 <li> <a href="#License">License</a></li>
 
-<hr />
+<hr/>
 
 == History ==
 
@@ -41,48 +41,48 @@ Open Source Erlang MySQL driver efforts are currently a fractured matter, at lea
 <li> <b>erlang-mysql-driver</b>: also in 2006/07 <a href="#ys">Yariv Sadan</a> created a fork from the ejabberd branch, gave it the name that stuck, and hosted it at <a href="#15">Google Code</a> before moving on to Facebook. He had added higher level handling of prepared statements and transactions, and stated that he had improved connection pooling and logging. There were changes both in the original Yxa and the ejabberd branch after the forking off that seem to never have made their way into the erlang-mysql-driver branch, which now lies dormant since Oct '07. In Feb '10, Dave Smith started making some</li>
 <a href="#15">updates</a> and put them on github, were the driver is now enjoying a couple of <a href="#16">active forks</a>.
 
-<li> <b>Emysql</b> was started from scratch in 2009 by <a href="#jv">Jacob Vorreuter</a> and <a href="#bw">Bill Warnecke</a> at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of <a href="#1">their work</a>, including all their commits and adding <a href="#docs">documentation</a>, <a href="#samples">samples</a>, <a href="#fixes">fixes</a> and extensions.   </li>
+<li> <b>Emysql</b> was started from scratch in 2009 by <a href="#jv">Jacob Vorreuter</a> and <a href="#bw">Bill Warnecke</a> at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of <a href="#1">their work</a>, including all their commits and adding <a href="#docs">documentation</a>, [samples], <a href="#fixes">fixes</a> and extensions.   </li>
 <br />
 <a href="#vb">Vitaliy Batichko</a> and
 <a href="#cr">Chris Rempel</a> have contributed updates to this branch. Thank you!
 
-<a name="1">[1]: http://github.com/JacobVorreuter/emysql "emysql"   </a>
-<a name="2">[2]: http://github.com/dizzyd/erlang-mysql-driver "erlang-mysql-driver"   </a>
-<a name="3">[3]: http://www.kth.se/ "Royal Institure of Technology"   </a>
-<a name="4">[4]: https://github.com/fredrikt/yxa/tree/master/src/mysql "Yxa mysql driver"   </a>
-<a name="5">[5]: http://www.stacken.kth.se/project/yxa/index.html "Yxa Home"   </a>
-<a name="6">[6]: https://github.com/fredrikt/yxa "Yxa repository at github"   </a>
-<a name="7">[7]: http://svn.process-one.net/ejabberd-modules/mysql/trunk/   </a>
+<a name="1"><a name="1">[1]: http://github.com/JacobVorreuter/emysql "emysql"   </a>  </a>
+<a name="2"><a name="2">[2]: http://github.com/dizzyd/erlang-mysql-driver "erlang-mysql-driver"   </a>  </a>
+<a name="3"><a name="3">[3]: http://www.kth.se/ "Royal Institure of Technology"   </a>  </a>
+<a name="4"><a name="4">[4]: https://github.com/fredrikt/yxa/tree/master/src/mysql "Yxa mysql driver"   </a>  </a>
+<a name="5"><a name="5">[5]: http://www.stacken.kth.se/project/yxa/index.html "Yxa Home"   </a>  </a>
+<a name="6"><a name="6">[6]: https://github.com/fredrikt/yxa "Yxa repository at github"   </a>  </a>
+<a name="7"><a name="7">[7]: http://svn.process-one.net/ejabberd-modules/mysql/trunk/   </a>  </a>
     "ejabberd mysql driver"<br />
-<a name="8">[8]: https://support.process-one.net "Process One Home"  </a>
-<a name="9">[9]: http://www.process-one.net/en/ejabberd/ "ejabberd Home"  </a>
-<a name="10">[10]: https://github.com/processone/ejabberd/ "ejabberd repository at github"  </a>
-<a name="11">[11]: https://support.process-one.net/doc/display/CONTRIBS/Yxa   </a>
+<a name="8"><a name="8">[8]: https://support.process-one.net "Process One Home"  </a>  </a>
+<a name="9"><a name="9">[9]: http://www.process-one.net/en/ejabberd/ "ejabberd Home"  </a>  </a>
+<a name="10"><a name="10">[10]: https://github.com/processone/ejabberd/ "ejabberd repository at github"  </a>  </a>
+<a name="11"><a name="11">[11]: https://support.process-one.net/doc/display/CONTRIBS/Yxa   </a>  </a>
      "ejabberd MySQL 4.1. patch"<br />
-<a name="12">[12]: https://github.com/Eonblast/Emysql/tree/master/doc/diff-ejabberd-yxa.txt  </a>
+<a name="12"><a name="12">[12]: https://github.com/Eonblast/Emysql/tree/master/doc/diff-ejabberd-yxa.txt  </a>  </a>
      "Diff of Yxa and ejabberd mysql drivers"<br />
-<a name="13">[13]: https://github.com/Eonblast/Emysql/tree/master/doc/diff-ejabberd-yxa-2.txt  </a>
+<a name="13"><a name="13">[13]: https://github.com/Eonblast/Emysql/tree/master/doc/diff-ejabberd-yxa-2.txt  </a>  </a>
      "Diff of Yxa and ejabberd mysql drivers ignoring comment changes"<br />
-<a name="14">[14]: http://code.google.com/p/erlang-mysql-driver/   </a>
+<a name="14"><a name="14">[14]: http://code.google.com/p/erlang-mysql-driver/   </a>  </a>
      "original erlang-mysql-driver"<br />
-<a name="15">[15]: http://github.com/dizzyd/erlang-mysql-driver   </a>
+<a name="15"><a name="15">[15]: http://github.com/dizzyd/erlang-mysql-driver   </a>  </a>
      "Dave Smith's erlang-mysql-driver at github, currently not maintained"<br />
-<a name="16">[16]: https://github.com/dizzyd/erlang-mysql-driver/network   </a>
+<a name="16"><a name="16">[16]: https://github.com/dizzyd/erlang-mysql-driver/network   </a>  </a>
      "Fork graph of erlang-mysql-driver at github"<br />
 
-<a name="ma">[ma]: mailto:ahltorp@nada.kth.se  </a>
-<a name="ys">[ys]: http://yarivsblog.blogspot.com/  </a>
-<a name="jv">[jv]: https://github.com/JacobVorreuter  </a>
-<a name="bw">[bw]: mailto:bill@rupture.com  </a>
-<a name="vb">[vb]: https://github.com/bva  </a>
-<a name="cr">[cr]: https://github.com/csrl  </a>
-<a name="hd">[hd]: mailto:hd2010@eonblast.com  </a>
+<a name="ma">[ma]: mailto:ahltorp@nada.kth.se         "Magnus Ahltorp"</a>
+<a name="ys">[ys]: http://yarivsblog.blogspot.com/    "Yariv Sadan"</a>
+<a name="bw">[bw]: mailto:bill@rupture.com            "Bill Warnecke"</a>
+<a name="jv">[jv]: https://github.com/JacobVorreuter  "Jacob Vorreuter"</a>
+<a name="vb">[vb]: https://github.com/bva             "Vitaliy Batichko"</a>
+<a name="cr">[cr]: https://github.com/csrl            "Chris Rempel"</a>
+<a name="hd">[hd]: mailto:hd2010@eonblast.com         "Henning Diedrich"</a>
 
-<a name="fixes">[fixes]:   https://github.com/Eonblast/Emysql/issues/closed  </a>
+<a name="fixes"><a name="fixes">[fixes]:   https://github.com/Eonblast/Emysql/issues/closed  </a>  </a>
           "Emysql fixes"<br />
-<a name="samples">[samples]: https://github.com/Eonblast/Emysql/tree/master/samples  </a>
+<a name="samples"><a name="samples">[samples]: https://github.com/Eonblast/Emysql/tree/master/samples  </a>  </a>
           "Emysql samples"<br />
-<a name="docs">[docs]:    http://eonblast.github.com/Emysql/  </a>
+<a name="docs"><a name="docs">[docs]:    http://eonblast.github.com/Emysql/  </a>  </a>
           "Emysql online docs"<br />
 
 == Usage  ==
