@@ -5,6 +5,10 @@ Erlang MySQL driver, based on a rewrite at Electronic Arts. Supports prepared st
 
 While you can use mysql via ODBC, using a driver like Emysql should perform better. 
 
+Download: <a href="https://github.com/Eonblast/Emysql/archives/master">https://github.com/Eonblast/Emysql/archives/master</a>
+Repository: <a href="https://github.com/Eonblast/Emysql">https://github.com/Eonblast/Emysql</a>
+Docs: <a href="http://eonblast.github.com/Emysql/">http://eonblast.github.com/Emysql/</a>
+
 This is a continuation fork of [emysql][1] with fixes, updates, more docs and samples. [emysql][1] is a clean rewrite of [erlang-mysql-driver][2]. 
 
 == Contents ==

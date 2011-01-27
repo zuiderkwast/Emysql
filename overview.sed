@@ -21,8 +21,9 @@ s/^\*(.+)$/<li>\1<\/li>/
 # source: each tabbed line
 s/^	(.+)$/```	\1'''/
 
-# emails
+# emails, urls
 s/<([^@>]+@[^.>]+.[^>]+)>/<a href=\"mailto:\1\">\1<\/a>/
+s/<(http[^:>]*:\/\/[^.>]+.[^>]+)>/<a href=\"\1\">\1<\/a>/
 
 # line breaks
 s/  $/<br \/>/
