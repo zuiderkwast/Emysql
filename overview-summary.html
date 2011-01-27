@@ -9,23 +9,21 @@
 <div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
 <h1> Emysql - Erlang MySQL driver
 </h1>
-<p>Copyright © 2009-2011 Bill Warnecke, Jacob Vorreuter, Henning Diedrich, Eonblast Corporation
-</p>
 <p><b>Version:</b> 0.2
 </p>
-<p><b>Authors:</b> Bill Warnecke (<a href="mailto:bill@rupture.com"><tt>bill@rupture.com</tt></a>), Jacob Vorreuter (<a href="mailto:jacob.vorreuter@gmail.com"><tt>jacob.vorreuter@gmail.com</tt></a>), Henning Diedrich (<a href="mailto:hd2010@eonblast.com"><tt>hd2010@eonblast.com</tt></a>).</p>
+<p><b>Authors:</b> Bill Warnecke, Jacob Vorreuter, Henning Diedrich.</p>
 <p><b>References</b><ul><li>See <a href="https://github.com/Eonblast/Emysql">Eonblast/Emysql on github</a> for this readme and download the newest version.
 </li></ul></p>
 
-<h3><a name="Emysql">Emysql</a></h3>
+<h4><a name="Emysql">Emysql</a></h4>
 
-<p>Erlang mysql driver, based on one used at Electronic Arts. Supports prepared statements and stored procedures. Samples and Docs see below.</p>
+<p>Erlang MySQL driver, based on a rewrite at Electronic Arts. Supports prepared statements and stored procedures. [Samples][] and [Docs][] see below.</p>
 
 <p>While you can use mysql via ODBC, using a driver like Emysql should perform better. </p>
 
 <p>This is a continuation fork of [emysql][1] with fixes, updates, more docs and samples. [emysql][1] is a clean rewrite of [erlang-mysql-driver][2]. </p>
 
-<h3><a name="Contents">Contents</a></h3>
+<h4><a name="Contents">Contents</a></h4>
 
 <p><li> History</li>
 <li> Hints on Usage</li>
@@ -35,7 +33,7 @@
 <li> License</li></p>
 
 
-<h3><a name="History">History</a></h3>
+<h4><a name="History">History</a></h4>
 
 <p>Open Source Erlang MySQL driver efforts are currently a fractured matter, at least for the higher functionality. There are four main choices:</p>
 
@@ -46,7 +44,7 @@
 <p><li> **erlang-mysql-driver**: also in 2006/07 [Yariv Sadan][ys] created a fork from the ejabberd branch, gave it the name that stuck, and hosted it at [Google Code][15] before moving on to Facebook. He had added higher level handling of prepared statements and transactions, and stated that he had improved connection pooling and logging. There were changes both in the original Yxa and the ejabberd branch after the forking off that seem to never have made their way into the erlang-mysql-driver branch, which now lies dormant since Oct '07. In Feb '10, Dave Smith started making some</li>
 [updates][15] and put them on github, were the driver is now enjoying a couple of [active forks][16].</p>
 
-<p><li> **Emysql** was started from scratch in 2009 by [Jacob Vorreuter][jv] and [Bill Warnecke][bw] at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of [their work][1], including all their commits and adding [documentation][], [samples][], [fixes][] and extensions.   </li>
+<p><li> **Emysql** was started from scratch in 2009 by [Jacob Vorreuter][jv] and [Bill Warnecke][bw] at Electronic Arts, who rewrote the erlang-mysql-driver code because they felt it had been touched by so many people that it had become more complicated than necessary. In a way, the third layer module, mysql.erl, had over time started to become badly entangled with the second, mysql_conn.erl. According to Jacob, Emysql is pretty stable and ran without issue in a production environment at Electronic Arts. This fork is a continuation of [their work][1], including all their commits and adding [documentation][docs], [samples][], [fixes][] and extensions.   </li>
 <br>
 [Vitaliy Batichko][vb] and
 [Chris Rempel][cr] have contributed updates to this branch. Thank you!</p>
@@ -83,18 +81,21 @@
 [cr]: https://github.com/csrl
 [hd]: mailto:hd2010@eonblast.com</p>
 
-<p>[fixes]: https://github.com/Eonblast/Emysql/issues/closed "Emysql fixes"
-[samples]: https://github.com/Eonblast/Emysql/tree/master/samples "Emysql samples"
-[documentation]: </p>
+<p>[fixes]:   https://github.com/Eonblast/Emysql/issues/closed           
+"Emysql fixes"
+[samples]: https://github.com/Eonblast/Emysql/tree/master/samples           
+"Emysql samples"
+[docs]:    http://eonblast.github.com/Emysql/           
+"Emysql online docs"</p>
 
-<h3><a name="Hints_on_Usage">Hints on Usage</a></h3>
+<h4><a name="Hints_on_Usage">Hints on Usage</a></h4>
 
-<h5><a name="Start_the_application">Start the application</a></h5>
+<p>===== Start the application =====</p>
 
 <pre>   	crypto:start(),</pre>
 <pre>   	application:start(emysql).</pre>
 	
-<h5><a name="Add_a_pool">Add a pool</a></h5>
+===== Add a pool =====
 <pre>   	% emysql:add_pool(PoolName, PoolSize, Username, Password, Host, Port, Database, Encoding) -&gt;</pre>
 <pre>   	%	ok | {error, pool_already_exists}</pre>
 <pre>   	% PoolName = atom()</pre>
@@ -108,12 +109,12 @@
 
 <pre>   	emysql:add_pool(mypoolname, 1, "username", "mypassword", "localhost", 3306, "mydatabase", utf8).</pre>
 	
-<h5><a name="Record_Types">Record Types</a></h5>
+===== Record Types =====
 <pre>   	-record(ok_packet, {seq_num, affected_rows, insert_id, status, warning_count, msg}).</pre>
 <pre>   	-record(error_packet, {seq_num, code, msg}).</pre>
 <pre>   	-record(result_packet, {seq_num, field_list, rows, extra}).</pre>
 
-<h5><a name="Executing_SQL_statements">Executing SQL statements</a></h5>
+===== Executing SQL statements =====
 <pre>   	% emysql:execute(PoolName, Statement) -&gt; result_packet() | ok_packet() | error_packet()</pre>
 <pre>   	% PoolName = atom()</pre>
 <pre>   	% Statement = string() | binary()</pre>
@@ -124,7 +125,7 @@
 <pre>   	emysql:execute(mypoolname, &lt;&lt;"UPDATE mytable SET bar = 'baz' WHERE id = 1"&gt;&gt;).</pre>
 <pre>   	#ok_packet{affected_rows=1}</pre>
 	
-<h5><a name="Executing_prepared_statements">Executing prepared statements</a></h5>
+===== Executing prepared statements =====
 <pre>   	% emysql:prepare(StmtName, Statement) -&gt; ok</pre>
 <pre>   	% StmtName = atom()</pre>
 <pre>   	% Statement = binary() | string()</pre>
@@ -139,7 +140,7 @@
 <pre>   	emysql:execute(mypoolname, my_stmt, [1]).</pre>
 <pre>   	#result_packet{field_list=[...], rows=[...]}</pre>
 
-<h5><a name="Executing_stored_procedures">Executing stored procedures</a></h5>
+<p>===== Executing stored procedures =====</p>
 
 <pre>   	% emysql:execute(PoolName, StmtName, Args) -&gt; result_packet() | ok_packet() | error_packet()</pre>
 <pre>   	% StmtName = atom()</pre>
@@ -158,7 +159,7 @@
 <pre>   	                &lt;&lt;&gt;&gt;},</pre>
 <pre>   	{ok_packet,7,0,0,34,0,[]}]</pre>
  
-<h5><a name="Converting_Row_Data_To_Records">Converting Row Data To Records</a></h5>
+===== Converting Row Data To Records =====
 <pre>   	% emysql_util:as_record(ResultPacket, RecordName, Fields) -&gt; Result</pre>
 <pre>   	% ResultPacket = result_packet()</pre>
 <pre>   	% RecordName = atom() (the name of the record to generate)</pre>
@@ -175,13 +176,13 @@
 <pre>   		  io:format("foo: ~p, ~p, ~p~n", [Foo#foo.bar, Foo#foo.baz, Foo#foo.bat])</pre>
 <pre>   	    end || Foo &lt;- Recs].</pre>
 
-<h3><a name="Getting_Emysql">Getting Emysql</a></h3>
+<h4><a name="Getting_Emysql">Getting Emysql</a></h4>
 
 <pre>   	$ git clone git://github.com/Eonblast/Emysql.git Emysql</pre>
 	
-<h3><a name="Samples">Samples</a></h3>
+<h4><a name="Samples">Samples</a></h4>
 
-<h5><a name="Hello_World">Hello World</a></h5>
+<p>===== Hello World =====</p>
 
 <p>This is a hello world program. Follow the three steps below to try it out.</p>
 	
@@ -208,7 +209,7 @@
 
 <p>We come back to that source, but first:</p>
 
-<h5><a name="Building_Emysql">Building Emysql</a></h5>
+<p>===== Building Emysql =====</p>
 
 <p>Build emysql.app, using make:</p>
 
@@ -216,7 +217,7 @@
 <pre>   	$ make</pre>
 
 
-<h5><a name="Sample_database">Sample database</a></h5>
+<p>===== Sample database =====</p>
 
 <p>For the above sample, create a local mysql database. You should have a mysql server installed and running:</p>
 	
@@ -226,7 +227,7 @@
 <pre>   	mysql&gt; create table hello_table (hello_text char(20));</pre>
 <pre>   	mysql&gt; grant all privileges on hello_database.* to hello_username@localhost identified by 'hello_password';</pre>
 
-<h5><a name="Run_Hello">Run Hello</a></h5>
+<p>===== Run Hello =====</p>
 
 <p>Be sure to have ./ebin in your Erlang path. Now copy the Hello World source above into a file hello.erl and run it (in the Emysql root directory):</p>
 
@@ -235,7 +236,7 @@
 
 <p>See more sample programms, below.</p>
 
-<h5><a name="Running_the_Samples">Running the Samples</a></h5><p>
+<p>===== Running the Samples =====
 Sample programs are in ./samples. </p>
 
 <p><li> <a href="http://github.com/Eonblast/Emysql/blob/master/samples/a_hello.erl">a_hello</a> - Hello World</li>
@@ -259,7 +260,7 @@ first create the database as listed above):</p>
 <pre>   	$ erlc a_hello.erl</pre>
 <pre>   	$ erl -pa ../ebin -s a_hello run -s init stop -noshell</pre>
 
-<h3><a name="Links">Links</a></h3>
+<h4><a name="Links">Links</a></h4>
 
 <p><li> <a href="http://github.com/Eonblast/Emysql">Emysql on Github</a></li>
 <li> <a href="https://github.com/fredrikt/yxa/tree/master/src/mysql">Original Yxa</a> mysql driver</li>
@@ -273,12 +274,12 @@ first create the database as listed above):</p>
 
 <p>-*maintained at the time of writing, Jan 2011.</p>
 
-<h3><a name="TODO">TODO</a></h3><p>
+<h4><a name="TODO">TODO</a></h4><p>
 <li> decrementing pool size could close sockets that are in use</li>
 <li> spawn individual conn_mgr gen_server processes for each pool</li>
 <li> allow row results to be returned as binary</li></p>
 
-<h3><a name="License">License</a></h3>
+<h4><a name="License">License</a></h4>
 
 <p>Copyright (c) 2009-2011
 Bill Warnecke <a href="mailto:bill@rupture.com">bill@rupture.com</a>,
@@ -309,6 +310,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 <hr>
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Jan 27 2011, 02:26:12.</i></p>
+<p><i>Generated by EDoc, Jan 27 2011, 02:35:05.</i></p>
 </body>
 </html>
