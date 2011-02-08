@@ -43,7 +43,7 @@ In most cases, especially for high performance and stability, this package, <a h
 If you are looking for the <b>plain necessities</b>, you should use the <a href="#7">ejabberd</a> mysql driver. It is simple, battle tested and stable. There are comprehensive instructions in the source comments.
 
 ==== Transaction ====
-For <b>mnesia-style transactions</b>, one of the multiple '<a href="#22">erlang-mysql-driver</a>s' may suite you best.  There are <a href="#16">quite many</a> branches of it out there, and they are based on the same project as the ejabberd driver. To learn more about out the differences between the drivers, see the <a href="#history">mysql driver history</a>.
+For <b>mnesia-style transactions</b>, one of the multiple '<a href="#22">erlang-mysql-driver</a>s' may suite you best.  There are <a href="#16">quite many</a> branches of it out there, and they are based on the same project as the ejabberd driver. To learn more about out the differences between the drivers, see the <a href="#History">mysql driver history</a>.
 
 == Getting Emysql ==
 
