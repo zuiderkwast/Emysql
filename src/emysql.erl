@@ -464,7 +464,9 @@ execute(PoolId, StmtName, Timeout) when is_atom(StmtName), is_integer(Timeout) -
 %%
 execute(PoolId, Query, Args, Timeout) when (is_list(Query) orelse is_binary(Query)) andalso is_list(Args) andalso is_integer(Timeout) ->
 	Connection = emysql_conn_mgr:wait_for_connection(PoolId),
+	io:format("process ~p now puts connection to use~n",[self()]),
 	monitor_work(Connection, Timeout, {emysql_conn, execute, [Connection, Query, Args]});
+
 
 execute(PoolId, StmtName, Args, Timeout) when is_atom(StmtName), is_list(Args) andalso is_integer(Timeout) ->
 	Connection = emysql_conn_mgr:wait_for_connection(PoolId),
@@ -579,6 +581,9 @@ monitor_work(Connection, Timeout, {M,F,A}) when is_record(Connection, connection
 			%% if the process returns data, unlock the
 			%% connection and collect the normal 'DOWN'
 			%% message send from the child process
+			%--io:format("process ~p is done using its connection but will hold on to it for a bit~n",[self()]),
+			%--receive	after 2000 -> nop end,
+			io:format("process ~p is done using its connection~n",[self()]),
 			erlang:demonitor(Mref, [flush]),
 			emysql_conn_mgr:unlock_connection(Connection),
 			Result

@@ -74,17 +74,21 @@ wait_for_connection(PoolId)->
 	%% wait to be notified of the next available connection
 	case lock_connection(PoolId) of
 		unavailable ->
-			gen_server:call(?MODULE, start_wait, infinity),
+		    io:format("process ~p must wait for a free connection, will be queued~n", [self()]),
+			gen_server:call_delay(?MODULE, start_wait, infinity),
 			receive
 				{connection, Connection} -> Connection
 			after lock_timeout() ->
+    		    io:format("process ~p dies waiting for a connection, thinking it's still in the queue.~n", [self()]),
 				exit(connection_lock_timeout)
 			end;
 		Connection ->
+		    io:format("process ~p immediately gets a free connection = no queueing ~n", [self()]),
 			Connection
 	end.
 
 unlock_connection(Connection) ->
+    io:format("--- unlock connection is called (misleading name: it may not end up unlocked but immediately re-assigned) ---~n"),
 	do_gen_call({unlock_connection, Connection}).
 
 replace_connection(OldConn, NewConn) ->
@@ -185,7 +189,19 @@ handle_call(start_wait, {From, _Mref}, State) ->
 	State1 = State#state{
 		waiting = queue:in(From, State#state.waiting)
 	},
+    io:format("process ~p has been queued to wait for a connection~n" ++
+            "           ... (now in ~w)~n" ++
+            "           ... it now waits arround here to provoke a race~n" ++
+            "           ... trying to cause a problem by not returning to wait_for_connection() in time ...~n",
+    [From, erlang:process_info(From, current_function)]),
+    receive
+    after 1000 -> nop
+    end,
+    io:format("process ~p ... has wasted enough time in ~p and returns now~n",
+    [From, erlang:process_info(From, current_function)]),
+    
 	{reply, ok, State1};
+
 
 handle_call({lock_connection, PoolId}, _From, State) ->
 	%% find the next available connection in the pool identified by PoolId
@@ -200,6 +216,7 @@ handle_call({lock_connection, PoolId}, _From, State) ->
 	end;
 
 handle_call({unlock_connection, Connection}, _From, State) ->
+    io:format("--- unlock connection is HANDLED (misleading name: it may not end up unlocked but immediately re-assigned) ---~n"),
 	{Result, State1} = pass_connection_to_waiting_pid(State, Connection, State#state.waiting),
 	{reply, Result, State1};
 
@@ -317,9 +334,13 @@ find_next_connection_in_pool(Pools, PoolId) ->
 	end.
 
 pass_connection_to_waiting_pid(State, Connection, Waiting) ->
+
+    io:format("--- a connection is ready to be assigned to a waiting process ---~n", []),
+
 	%% check if any processes are waiting for a connection
 	case queue:is_empty(Waiting) of
 		true ->
+            io:format("... but no process is waiting: unlock it~n", []),
 			%% if no processes are waiting then unlock the connection
 			case find_pool(Connection#connection.pool_id, State#state.pools, []) of
 				{Pool, OtherPools} ->
@@ -339,16 +360,21 @@ pass_connection_to_waiting_pid(State, Connection, Waiting) ->
 					{{error, pool_not_found}, State}
 			end;
 		false ->
+            io:format("... and some process is waiting in the queue for it:~n", []),
 			%% if the waiting queue is not empty then remove the head of
 			%% the queue and check if that process is still waiting
 			%% for a connection. If so, send the connection. Regardless,
 			%% update the queue in state once the head has been removed.
 			{{value, Pid}, Waiting1} = queue:out(Waiting),
+		    io:format("process ~p is fetched from the wait queue head.~n", [Pid]),
+
 			case erlang:process_info(Pid, current_function) of
 				{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
 					erlang:send(Pid, {connection, Connection}),
 					{ok, State#state{waiting = Waiting1}};
 				_ ->
+				    io:format("Warning: dropping wait queue head pid ~p~n", [Pid]),
+				    io:format("so, again: ...~n", []),
 					pass_connection_to_waiting_pid(State, Connection, Waiting1)
 			end
 	end.
