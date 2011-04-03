@@ -368,8 +368,10 @@ pass_connection_to_waiting_pid(State, Connection, Waiting) ->
 			{{value, Pid}, Waiting1} = queue:out(Waiting),
 		    io:format("process ~p is fetched from the wait queue head.~n", [Pid]),
 
-			case erlang:process_info(Pid, current_function) of
-				{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
+			% case erlang:process_info(Pid, current_function) of
+			%	{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
+			case erlang:is_process_alive(Pid) of
+			    true ->
 					erlang:send(Pid, {connection, Connection}),
 					{ok, State#state{waiting = Waiting1}};
 				_ ->
