@@ -172,12 +172,12 @@ call(Name, Request, Timeout) ->
     end.
 
 call_delay(Name, Request, Timeout) ->
-    io:format("process ~p is now tricked to enter delaying gen_server:call()~n", [self()]),
+    io:format("process ~p is tricked to enter a delaying version of gen_server:call()~n", [self()]),
     case catch gen:call(Name, '$gen_call', Request, Timeout) of
 	{ok,Res} ->
-        io:format("process ~p got its response but is held in gen_server:call() to produce a race~n", [self()]),
+        io:format("process ~p got its response but is held in the delaying gen_server:call() to produce a race~n", [self()]),
         receive after 2000 -> nop end,
-        io:format("process ~p is now released from forced sleep in gen_server:call() ... and should now be late~n", [self()]),
+        io:format("process ~p is now released from forced sleep in the delaying version of gen_server:call()~n", [self()]),
 	    Res;
 	{'EXIT',Reason} ->
 	    exit({Reason, {?MODULE, call, [Name, Request, Timeout]}})

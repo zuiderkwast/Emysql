@@ -79,7 +79,20 @@ wait_for_connection(PoolId)->
 			receive
 				{connection, Connection} -> Connection
 			after lock_timeout() ->
-    		    io:format("process ~p dies waiting for a connection, thinking it's still in the queue.~n", [self()]),
+	           io:format("TIMEOUT ---------------------------------->~n", []),
+       		   io:format("*******************************************~n", []),
+   	        	io:format("process ~p dies waiting for a connection, thinking it's still in the queue. It may be a race or regular server overload.~n", [self()]),
+    		    io:format("******************************************~n", []),
+			    % case queue:member(self(), waiting()) of
+    		    %    true ->
+    		    %        io:format("++++++++++++++++++++++++++++++++++++~n", []),
+    	        %	    io:format("process ~p dies waiting for a connection,  still being in the queue = normal overload.~n", [self()]),
+    		    %        io:format("++++++++++++++++++++++++++++++++++++~n", []);
+			    %    _ ->
+            	%	   io:format("#####################################~n", []),
+    	        %	    io:format("process ~p dies waiting for a connection, thinking it's still in the queue. But it is not = RACE.~n", [self()]),
+    		    %        io:format("####################################~n", [])
+    		    % end,
 				exit(connection_lock_timeout)
 			end;
 		Connection ->
@@ -201,7 +214,6 @@ handle_call(start_wait, {From, _Mref}, State) ->
     [From, erlang:process_info(From, current_function)]),
     
 	{reply, ok, State1};
-
 
 handle_call({lock_connection, PoolId}, _From, State) ->
 	%% find the next available connection in the pool identified by PoolId
@@ -368,10 +380,10 @@ pass_connection_to_waiting_pid(State, Connection, Waiting) ->
 			{{value, Pid}, Waiting1} = queue:out(Waiting),
 		    io:format("process ~p is fetched from the wait queue head.~n", [Pid]),
 
-			% case erlang:process_info(Pid, current_function) of
-			%	{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
-			case erlang:is_process_alive(Pid) of
-			    true ->
+			case erlang:process_info(Pid, current_function) of
+			    {current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
+			% case erlang:is_process_alive(Pid) of
+			%    true ->
 					erlang:send(Pid, {connection, Connection}),
 					{ok, State#state{waiting = Waiting1}};
 				_ ->

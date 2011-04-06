@@ -2,6 +2,17 @@
 
 # THIS IS AN EXPERIMENTAL BRANCH, NOT FOR PRODUCTION
 
+This branch traces a lot and has a brutalized gen_server.erl to provoke the race condition as described at github, issue #9.
+
+**Race Test in etc/racetest/alllock.erl**
+
+	make
+	cd etc/racetest
+	erlc alllock.erl
+	erl -pa ./../../ebin -s alllock run -s init stop -noshell
+	
+---	
+
 Erlang MySQL driver, based on a rewrite at Electronic Arts. [Easy][Samples] to use, strong [connection pooling][Adding_a_Pool], [prepared statements][Executing_Prepared_Statements] & [stored procedures][Executing_Stored_Procedures]. Optimized for a central node architecture and OLTP.
 
 While you can use mysql via ODBC, using a driver, like Emysql, should perform better. For [samples][Samples] and [docs][] see below. Read the brief on [choosing][Choosing] a package and about the [history][History] of the various MySQL drivers.
