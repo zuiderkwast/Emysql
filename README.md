@@ -4,14 +4,29 @@
 
 This branch proposes a remedy for the github listed issue #9.
 
+**Race Test in etc/racetest/race9.erl**
+
+	make
+	cd etc/racetest
+	erlc race9.erl
+	erl -pa ./../../ebin -s race9 run -s init stop -noshell
+	
+This reveals a race with the current Emysql HEAD. Some inserts are dropped.
+
+---	
+
 **Race Test in etc/racetest/alllock.erl**
 
 	make
 	cd etc/racetest
 	erlc alllock.erl
 	erl -pa ./../../ebin -s alllock run -s init stop -noshell
-	
+
+This is reported to show a deadlock for the proposed remedy for issue #9.
+This could not be confirmed yet.
+
 ---	
+
 
 Erlang MySQL driver, based on a rewrite at Electronic Arts. [Easy][Samples] to use, Strong [connection pooling][Adding_a_Pool], [prepared statements][Executing_Prepared_Statements] & [stored procedures][Executing_Stored_Procedures]. Optimized for a central node architecture and OLTP.
 

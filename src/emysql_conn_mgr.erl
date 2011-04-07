@@ -345,10 +345,10 @@ pass_connection_to_waiting_pid(State, Connection, Waiting) ->
 			%% update the queue in state once the head has been removed.
 			{{value, Pid}, Waiting1} = queue:out(Waiting),
 			% dev2 re issue #9:
-			% case erlang:process_info(Pid, current_function) of
-			%	{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
-			case erlang:is_process_alive(Pid) of
-			    true ->
+			case erlang:process_info(Pid, current_function) of
+				{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
+			% case erlang:is_process_alive(Pid) of
+			%    true ->
 			        erlang:send(Pid, {connection, Connection}),
 					{ok, State#state{waiting = Waiting1}};
 				_ ->
