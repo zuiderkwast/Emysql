@@ -7,7 +7,7 @@ run() ->
 
     crypto:start(),
     application:start(emysql),
-    application:set_env(emysql, lock_timeout, 500),
+    application:set_env(emysql, lock_timeout, infinity),
 
     emysql:add_pool(hello_pool, 30,
         "hello_username", "hello_password", "localhost", 3306,
