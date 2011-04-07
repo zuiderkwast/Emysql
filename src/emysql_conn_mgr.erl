@@ -31,7 +31,8 @@
 -export([pools/0, waiting/0, add_pool/1, remove_pool/1,
 		add_connections/2, remove_connections/2,
 		lock_connection/1, wait_for_connection/1,
-		unlock_connection/1, replace_connection/2, find_pool/3]).
+		unlock_connection/1, replace_connection/2, replace_connection_locked/2,
+		find_pool/3]).
 
 -include("emysql.hrl").
 
@@ -59,16 +60,16 @@ add_pool(Pool) ->
 remove_pool(PoolId) ->
 	do_gen_call({remove_pool, PoolId}).
 
-add_connections(PoolId, Conns) when is_atom(PoolId), is_list(Conns) ->
+add_connections(PoolId, Conns) when is_list(Conns) ->
 	do_gen_call({add_connections, PoolId, Conns}).
 
-remove_connections(PoolId, Num) when is_atom(PoolId), is_integer(Num) ->
+remove_connections(PoolId, Num) when is_integer(Num) ->
 	do_gen_call({remove_connections, PoolId, Num}).
 
-lock_connection(PoolId) when is_atom(PoolId) ->
+lock_connection(PoolId)->
 	do_gen_call({lock_connection, PoolId}).
 
-wait_for_connection(PoolId) when is_atom(PoolId) ->
+wait_for_connection(PoolId)->
 	%% try to lock a connection. if no connections are available then
 	%% wait to be notified of the next available connection
 	case lock_connection(PoolId) of
@@ -88,6 +89,9 @@ unlock_connection(Connection) ->
 
 replace_connection(OldConn, NewConn) ->
 	do_gen_call({replace_connection, OldConn, NewConn}).
+
+replace_connection_locked(OldConn, NewConn) ->
+	do_gen_call({replace_connection_locked, OldConn, NewConn}).
 
 %% the stateful loop functions of the gen_server never
 %% want to call exit/1 because it would crash the gen_server.
@@ -217,6 +221,23 @@ handle_call({replace_connection, OldConn, NewConn}, _From, State) ->
 			{reply, {error, pool_not_found}, State}
 	end;
 
+handle_call({replace_connection_locked, OldConn, NewConn}, _From, State) ->
+	%% replace an existing, locked condition with the newly supplied one
+	%% and keep it in the locked list so that the caller can continue to use it
+	%% without having to lock another connection.
+	case find_pool(OldConn#connection.pool_id, State#state.pools, []) of
+		{Pool, OtherPools} ->
+		  Locked = gb_trees:enter(
+		    NewConn#connection.id, NewConn ,gb_trees:delete_any(
+		      OldConn#connection.id, Pool#pool.locked
+		    )
+		  ),
+		  Pool1 = Pool#pool{locked = Locked},
+			{reply, ok, State#state{pools=[Pool1|OtherPools]}};
+		undefined ->
+			{reply, {error, pool_not_found}, State}
+	end;
+
 handle_call(_, _From, State) -> {reply, {error, invalid_call}, State}.
 
 %%--------------------------------------------------------------------
@@ -323,6 +344,7 @@ pass_connection_to_waiting_pid(State, Connection, Waiting) ->
 			%% for a connection. If so, send the connection. Regardless,
 			%% update the queue in state once the head has been removed.
 			{{value, Pid}, Waiting1} = queue:out(Waiting),
+			% dev2 re issue #9:
 			% case erlang:process_info(Pid, current_function) of
 			%	{current_function,{emysql_conn_mgr,wait_for_connection,1}} ->
 			case erlang:is_process_alive(Pid) of

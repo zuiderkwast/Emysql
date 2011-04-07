@@ -1,10 +1,17 @@
 ## Emysql
 
-# EXPERIMENTAL BRANCH, ISSUE #9
+# THIS IS AN EXPERIMENTAL BRANCH, NOT FOR PRODUCTION
 
-**no traces**
+This branch proposes a remedy for the github listed issue #9.
 
-----
+**Race Test in etc/racetest/alllock.erl**
+
+	make
+	cd etc/racetest
+	erlc alllock.erl
+	erl -pa ./../../ebin -s alllock run -s init stop -noshell
+	
+---	
 
 Erlang MySQL driver, based on a rewrite at Electronic Arts. [Easy][Samples] to use, Strong [connection pooling][Adding_a_Pool], [prepared statements][Executing_Prepared_Statements] & [stored procedures][Executing_Stored_Procedures]. Optimized for a central node architecture and OLTP.
 
@@ -155,7 +162,9 @@ Be sure to have ./ebin in your Erlang path. The hello-world source as shown abov
 	$ erlc hello.erl
 	$ erl -pa ./ebin -s hello run -s init stop -noshell
 
-That's it. 
+That's it. If you need to blindly repeat that more often some time, you can also use
+
+	$ make hello
 
 There are more sample programs:
 
@@ -430,7 +439,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 [Links]:    #Links
 [Todo]:     #Todo
 [License]:  #License
-
-[Executing_Prepared_Statements]:    #Executing_Prepared_Statements
+[Executing_Prepared_Statements]: #Executing_Prepared_Statements
 [Executing_Stored_Procedures]:   #Executing_Stored_Procedures
-[Adding_a_Pool]:     #Adding_a_Pool
+[Adding_a_Pool]:                 #Adding_a_Pool
