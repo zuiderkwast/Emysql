@@ -7,7 +7,7 @@ run() ->
 
     crypto:start(),
     application:start(emysql),
-    application:set_env(emysql, lock_timeout, 500),
+    application:set_env(emysql, lock_timeout, infinity),
 
     emysql:add_pool(hello_pool, 30,
         "hello_username", "hello_password", "localhost", 3306,
@@ -27,7 +27,7 @@ run() ->
     io:format("total records: ~p~n", [Val]).
 
 testfun() ->
-            [ ok = wait_pids(create_writers(10), normal, infinity) || _ <- lists:seq(1, 5) ].
+            [ ok = wait_pids(create_writers(20000), normal, infinity) || _ <- lists:seq(1, 5) ].
 
 create_writers(N) ->
     % io:format("create_writer ~p~n", [N]),
