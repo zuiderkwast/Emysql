@@ -1,3 +1,16 @@
+## Spilgames
+
+Maintainer: Bart van Deenen ( Bart.vanDeenen@spilgames.com, bart.vandeenen@gmail.com)
+
+### Tags:
+
+* tag 20120402   (no changes to external library). eonblast/emysql merged april 2nd
+
+### last update with external library:
+
+* april 2nd 2012
+
+
 ## Emysql 0.2.13
 
 <hr/>
