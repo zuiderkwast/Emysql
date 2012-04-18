@@ -6,12 +6,13 @@ Maintainer: Bart van Deenen ( Bart.vanDeenen@spilgames.com, bart.vandeenen@gmail
 
 * tag 20120402   (no changes to external library). eonblast/emysql merged april 2nd
 
-### last update with external library:
+### last update with eonblast library:
 
-* april 2nd 2012
+* april 18th 2012
 
 
-## Emysql 0.2.14
+ ## Emysql 0.2.14
+
 
 <hr/>
 **Please note: this commit of Apr '12 has incompatible changes for automatic UTF-8 conversion vs the Dec '11 commits.**

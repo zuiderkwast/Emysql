@@ -100,7 +100,8 @@
 			prepare/2,
 			execute/2, execute/3, execute/4, execute/5,
 			default_timeout/0,
-			modules/0	
+			modules/0	,
+			execute_transaction/4
 		]).
 
 % for record and constant defines
@@ -431,6 +432,13 @@ execute(PoolId, Query, Timeout) when (is_list(Query) orelse is_binary(Query)) an
 
 execute(PoolId, StmtName, Timeout) when is_atom(StmtName), is_integer(Timeout) ->
 	execute(PoolId, StmtName, [], Timeout).
+
+execute_transaction( PoolId, Query, Pid, Args) ->
+	Connection = emysql_conn_mgr:wait_for_connection(PoolId),
+    %-% io:format("~p execute got connection for pool id ~p: ~p~n",[self(), PoolId, Connection#emysql_connection.id]),
+	monitor_work(Connection, default_timeout(), {emysql_conn, execute_transaction, 
+		[Connection, Query, Pid, Args] }).
+	
 
 %% @spec execute(PoolId, Query|StmtName, Args, Timeout) -> Result | [Result]
 %%		PoolId = atom()

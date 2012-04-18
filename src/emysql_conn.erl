@@ -30,7 +30,8 @@
 		execute/3, prepare/3, unprepare/2,
 		open_connections/1, open_connection/1,
 		reset_connection/3, close_connection/1,
-		open_n_connections/2, hstate/1
+		open_n_connections/2, hstate/1,
+		execute_transaction/4
 ]).
 
 -include("emysql.hrl").
@@ -44,6 +45,33 @@ set_encoding(Connection, Encoding) ->
 	Packet = <<?COM_QUERY, "set names '", (erlang:atom_to_binary(Encoding, utf8))/binary, "'">>,
 	emysql_tcp:send_and_recv_packet(Connection#emysql_connection.socket, Packet, 0).
 
+execute_transaction( Connection, Query, Pid, Args ) when is_list(Query) ->
+	execute_transaction(Connection,  << (emysql_util:to_binary(Query, Connection#emysql_connection.encoding))/binary>>,
+	Pid, Args);
+
+execute_transaction( Connection, Query, Pid, Args ) ->
+	StartTransaction = <<"START TRANSACTION; ">>,
+	Packet = <<?COM_QUERY, StartTransaction/binary, Query/binary>>,
+	Results  = emysql_tcp:send_and_recv_packet( Connection#emysql_connection.socket,
+		Packet, 0) ,
+
+	Pid ! {self(), {Results, Args} } ,
+	Sql = receive 
+		{Pid, commit} ->
+			<<"COMMIT">>;
+		_ ->
+			<<"ROLLBACK">>
+	after
+		1500 ->
+			io:format("~p timeout -> rollback ~n", [self()]),
+			<<"ROLLBACK">>
+	end,
+			
+	emysql_tcp:send_and_recv_packet( Connection#emysql_connection.socket,
+		<<?COM_QUERY, Sql/binary>>, 0) .
+			
+
+	
 execute(Connection, Query, []) when is_list(Query) ->
 	 %-% io:format("~p execute list: ~p using connection: ~p~n", [self(), iolist_to_binary(Query), Connection#emysql_connection.id]),
 	Packet = <<?COM_QUERY, (emysql_util:to_binary(Query, Connection#emysql_connection.encoding))/binary>>,
