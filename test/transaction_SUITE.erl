@@ -34,11 +34,11 @@ init_per_suite(Config) ->
     crypto:start(),
     application:start(emysql),
  
-	emysql:add_pool(uniq_db, 1,
+	emysql:add_pool(uniq_db, 5,
         "hello_username", "hello_password", "localhost", 3306,
         "hello_database", utf8),
         
-	emysql:add_pool(nonuniq_db, 1,
+	emysql:add_pool(nonuniq_db, 5,
         "hello_username", "hello_password", "localhost", 3306,
         "hello_database", utf8),
 
@@ -49,16 +49,21 @@ init_per_suite(Config) ->
 end_per_suite(_) ->
 	ok.
 
-
-%% Test Case 1
-%%--------------------------------------------------------------------
-tx_1(_) ->
-
+init_per_testcase(_Case,_Config) ->
 	emysql:execute(uniq_db, <<"truncate uniq">>),
 	emysql:execute(nonuniq_db, <<"truncate nonuniq">>),
 
 	emysql:execute(uniq_db, <<"insert into uniq values (1,1), (2,2)">>),
 	emysql:execute(nonuniq_db, <<"insert into nonuniq values (1,1), (2,2)">>),
+	_Config.
+
+end_per_testcase(_Case, _Config) ->
+	ok.
+
+%% Test Case 1
+%%--------------------------------------------------------------------
+tx_1(_) ->
+
 
 	check([[1,1],[2,2]],[[1,1],[2,2]]).
 
@@ -66,17 +71,14 @@ tx_1(_) ->
 %%--------------------------------------------------------------------
 tx_2(_) ->
 
-	tx_1(undefined),
 
-	% create a transient transaction process that spawns two processes that
-	% perform jobs in a transaction.
-	%
-	spawn_link( emysql_transactions, transaction, [[
+	%% This shall cause an error because the first insert violates unique key
+	%% constraints
+	{error, _Results} =  emysql_transactions:transaction( blocking, parallel, [
 		[ uniq_db,    "insert into uniq values (1,1), (2,2)", 1 ],
 		[ nonuniq_db, "insert into nonuniq values (1,1), (2,2)", 2 ]
-	]]),
+	]),
 
-	timer:sleep(100),
 	check([[1,1],[2,2]],
 		[[1,1],[2,2] ]).
 
@@ -88,26 +90,22 @@ tx_2(_) ->
 %%--------------------------------------------------------------------
 tx_3(_) ->
 
-	tx_1(undefined),
-
-	spawn_link( emysql_transactions, transaction, [[
+	{atomic, _Results} = emysql_transactions:transaction(blocking, parallel, [
 		[  uniq_db, <<"insert into uniq values    (3,3), (4,4)">>, 1 ],
 		[  nonuniq_db, <<"insert into nonuniq values (3,3), (4,4)">>, 2 ]
-	]]),
+	]),
 
-	timer:sleep(100),
-	check([[1,1],[2,2],[3,3],[4,4]],
-	 [[1,1],[2,2],[3,3],[4,4]]).
+	check( [  [ 1 , 1] ,  [ 2 , 2] ,  [ 3 , 3] ,  [ 4 , 4]]   , 
+	       [  [ 1 , 1] ,  [ 2 , 2] ,  [ 3 , 3] ,  [ 4 , 4]]).
 
 tx_4(_) ->
 	tx_2(undefined),
 
 	% this should rollback, even though the first statement is ok.
-	spawn_link( emysql_transactions, transaction, [[
-		[  uniq_db, <<"update uniq set `value` = 8 where `key` = 1">>, 1] ,
-		[  uniq_db, <<"insert into uniq values (3,3), (4,4)">>, 2 ]
-	]]),
-	timer:sleep(100),
+	{error, _Results} = emysql_transactions:transaction(blocking, parallel, [
+		[  uniq_db, <<"update uniq set `value` = 8 where `key` = 1;insert into uniq values (1,1)">>, 2 ]
+	]),
+
 	check([[1,1],[2,2]],
 		[[1,1],[2,2] ]).
 

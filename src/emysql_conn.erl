@@ -50,27 +50,32 @@ execute_transaction( Connection, Query, Pid, Args ) when is_list(Query) ->
 	Pid, Args);
 
 execute_transaction( Connection, Query, Pid, Args ) ->
-	%-% io:format("~p:execute_transaction Query=~p~n", [?MODULE, Query]),
+	%-% ct:print("~p:execute_transaction conn = ~p Query=~p~n", [?MODULE, Connection, Query]),
 	StartTransaction = <<"START TRANSACTION; ">>,
 	Packet = <<?COM_QUERY, StartTransaction/binary, Query/binary>>,
 	Results  = emysql_tcp:send_and_recv_packet( Connection#emysql_connection.socket,
 		Packet, 0) ,
 
-	%-% io:format("~p:execute_transaction Results=~p~n", [?MODULE, Results]),
+	%-% ct:print("~p:execute_transaction conn = ~p Results=~p~n", [?MODULE, Connection, Results]),
 	Pid ! {self(), {Results, Args} } ,
 	Sql = receive 
 		{Pid, commit} ->
 			<<"COMMIT">>;
-		_ ->
+		{Pid, rollback}  ->
 			<<"ROLLBACK">>
 	after
-		1500 ->
-			io:format("~p:execute_transaction ~p timeout -> rollback ~n", [?MODULE, self()]),
+		5000 ->
+			ct:print("~p:execute_transaction ~p timeout -> rollback ~n", [?MODULE, self()]),
 			<<"ROLLBACK">>
 	end,
 			
 	emysql_tcp:send_and_recv_packet( Connection#emysql_connection.socket,
-		<<?COM_QUERY, Sql/binary>>, 0) .
+		<<?COM_QUERY, Sql/binary>>, 0) ,
+	
+	% we do this to make the transaction blocking, so that a consecutive query
+	% does not get the uncommitted results from the database (I ran into this
+	% during testing)
+	Pid ! {self(), done} .
 			
 
 	

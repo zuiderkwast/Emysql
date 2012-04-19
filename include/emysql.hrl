@@ -28,7 +28,7 @@
 % -define(transaction_debug,1).
 
 -ifdef(transaction_debug).
--define(tdb(Format, Args), io:format(Format ++ "~n", Args)).
+-define(tdb(Format, Args), ct:print(Format ++ "~n", Args)).
 -else.
 -define(tdb(Format, Args), ok).
 -endif.
