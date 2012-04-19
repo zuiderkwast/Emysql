@@ -433,7 +433,7 @@ execute(PoolId, Query, Timeout) when (is_list(Query) orelse is_binary(Query)) an
 execute(PoolId, StmtName, Timeout) when is_atom(StmtName), is_integer(Timeout) ->
 	execute(PoolId, StmtName, [], Timeout).
 
-execute_transaction( PoolId, Query, Pid, Args) ->
+execute_transaction( Pid, PoolId, Query, Args) ->
 	Connection = emysql_conn_mgr:wait_for_connection(PoolId),
     %-% io:format("~p execute got connection for pool id ~p: ~p~n",[self(), PoolId, Connection#emysql_connection.id]),
 	monitor_work(Connection, default_timeout(), {emysql_conn, execute_transaction, 

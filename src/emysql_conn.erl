@@ -50,11 +50,13 @@ execute_transaction( Connection, Query, Pid, Args ) when is_list(Query) ->
 	Pid, Args);
 
 execute_transaction( Connection, Query, Pid, Args ) ->
+	%-% io:format("~p:execute_transaction Query=~p~n", [?MODULE, Query]),
 	StartTransaction = <<"START TRANSACTION; ">>,
 	Packet = <<?COM_QUERY, StartTransaction/binary, Query/binary>>,
 	Results  = emysql_tcp:send_and_recv_packet( Connection#emysql_connection.socket,
 		Packet, 0) ,
 
+	%-% io:format("~p:execute_transaction Results=~p~n", [?MODULE, Results]),
 	Pid ! {self(), {Results, Args} } ,
 	Sql = receive 
 		{Pid, commit} ->
@@ -63,7 +65,7 @@ execute_transaction( Connection, Query, Pid, Args ) ->
 			<<"ROLLBACK">>
 	after
 		1500 ->
-			io:format("~p timeout -> rollback ~n", [self()]),
+			io:format("~p:execute_transaction ~p timeout -> rollback ~n", [?MODULE, self()]),
 			<<"ROLLBACK">>
 	end,
 			

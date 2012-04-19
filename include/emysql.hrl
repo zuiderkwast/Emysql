@@ -25,6 +25,13 @@
 %% FROM,  OUT OF OR IN CONNECTION WITH THE SOFTWARE  OR THE USE OR
 %% OTHER DEALINGS IN THE SOFTWARE.
 
+% -define(transaction_debug,1).
+
+-ifdef(transaction_debug).
+-define(tdb(Format, Args), io:format(Format ++ "~n", Args)).
+-else.
+-define(tdb(Format, Args), ok).
+-endif.
 
 -record(pool, {pool_id, size, user, password, host, port, database, encoding, available=queue:new(), locked=gb_trees:empty(), waiting=queue:new()}).
 -record(emysql_connection, {id, pool_id, encoding, socket, version, thread_id, caps, language, prepared=gb_trees:empty(), locked_at, alive=true}).
