@@ -69,6 +69,9 @@ all-test: test encoding-test test20
 encoding-test: all
 	(cd test; ct_run -suite latin_SUITE utf8_SUITE utf8_to_latindb_SUITE latin_to_utf8db_SUITE -pa ../ebin $(CRYPTO_PATH))
 
+transaction-test: all
+	(cd test; ct_run -suite transaction_SUITE -pa ../ebin $(CRYPTO_PATH))
+
 test: all
 	(cd test; ct_run -suite environment_SUITE basics_SUITE conn_mgr_SUITE -pa ../ebin $(CRYPTO_PATH))
 

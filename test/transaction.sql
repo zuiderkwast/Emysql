@@ -1,3 +1,8 @@
+%% DDL for transaction test suite.
+%% Author: Bart van Deenen
+%% 04/18/12
+
+USE hello_database;
 
 DROP TABLE IF EXISTS `uniq`;
 CREATE TABLE `uniq` (
