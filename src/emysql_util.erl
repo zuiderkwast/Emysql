@@ -185,6 +185,9 @@ encode(Val, list, Encoding) when is_binary(Val) ->
 	quote(unicode:characters_to_list(Val, Encoding));
 
 
+encode(Val, binary, Encoding) when is_atom(Val) ->
+	encode(atom_to_list(Val), binary, Encoding);
+
 encode(Val, binary, latin1) when is_list(Val) -> 
 	list_to_binary(quote(Val));
 
