@@ -23,12 +23,19 @@
 %% FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 %% OTHER DEALINGS IN THE SOFTWARE.
 -module(emysql_util).
+-export([get_error_packet_msg/1, get_result_packet_rows/1, new_ok_packet/0]).
 -export([field_names/1, as_record/4, as_record/3, length_coded_binary/1, length_coded_string/1,
 	null_terminated_string/2, asciz/1, bxor_binary/2, dualmap/3, hash/1,
 	rnd/3, encode/1, encode/2, quote/1]).
 -compile(export_all).
 
 -include("emysql.hrl").
+
+get_error_packet_msg(#error_packet{ msg = Msg }) -> Msg.
+
+get_result_packet_rows(#result_packet{ rows = Rows }) -> Rows.
+
+new_ok_packet() -> #ok_packet{}.
 
 field_names(Result) when is_record(Result, result_packet) ->
 	[Field#field.name || Field <- Result#result_packet.field_list].
